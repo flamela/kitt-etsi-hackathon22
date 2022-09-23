@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>KITT - ETSI MEC Hackathon 2022</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">    
+    <link href={{ url_for('static', filename='main.css' ) }} rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>    
+</head>
+
+<body style="background-color: #10446b; position: fixed; top: 0; bottom: 0; left: 0; right: 0;">
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header" style="background-color: #10446b">
+        <div class="app-main__inner" style="background-color: #10446b">
+            <!-- Page Title-->            
+            <div class="row" style="height: 10em;">
+                <div class="col-md-4 col-xl-4">
+                    <!--img src="{{ url_for('static', filename='images/mmtc_dashboard.png') }}" style='height: 80%; width: 80%; object-fit: contain; margin-top: 0em; margin-left: 2em;'/-->
+                    <div class="row">
+                        <h1 style="font-family: Roboto; color: white; margin-top: 1em; margin-left: auto; margin-right: auto;">KITT - mMTC Dashboard</h1>
+                    </div> 
+                    <div class="row">
+                        <h4 style="font-family: Roboto; color: white; margin-left: auto; margin-right: auto;">ETSI MEC Hackathon 2022</h4>
+                    </div> 
+                </div> 
+                <div class="col-md-4 col-xl-4">
+                    <img src="{{ url_for('static', filename='images/optare.png') }}" style='height: 80%; width: 80%; object-fit: contain; margin-top: 2em; margin-left: 6em; margin-right: auto;'/>
+                </div>
+                <div class="col-md-3 col-xl-3">
+                    <div class="row" style="margin-left: 10em;">
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/car.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='car.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>                    
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/mmtc.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='mmtc.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/operator.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='operator.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>
+                    </div>
+                </div>          
+            </div>
+            <div class="row" style="margin-top: 10em; margin-left: auto; margin-right: auto;">
+                <div class="col-md-6 col-xl-6" style="margin-left: auto; margin-right: auto;">
+                    <!-- Map -->                
+                    <div class="main-card card" style="height: 40rem;">                                                    
+                        <iframe src="{{ url_for('map')}}" style="display: block; border: none; height: calc(100vh - 30px); width: 100%;"></iframe>                        
+                    </div>                                     
+                </div>
+                <div class="col-md-6 col-xl-6" style="margin-left: auto; margin-right: auto;">
+                    <!-- Logs -->                
+                    <div class="main-card card" style="height: 40rem;">                                                    
+                        <img src="{{ url_for('static', filename='images/log.png')}}" style="display: block; border: none; height: calc(100vh - 30px); width: 100%;"></img>
+                    </div>                                    
+                </div>
+            </div>
+        </div>
+    </div>             
+</body>
+
+</html>

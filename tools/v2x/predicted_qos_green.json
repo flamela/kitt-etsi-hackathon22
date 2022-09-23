@@ -1,0 +1,25 @@
+{
+    "locationGranularity": "geoData",
+    "routes": [
+      {
+        "routeInfo": [
+          {
+            "location": {
+              "geoArea": {
+                "latitude": 43.738760,
+                "longitude": 7.428264
+              }              
+            }            
+          },
+          {
+            "location": {
+              "geoArea": {
+                "latitude": 43.743010,
+                "longitude": 7.429504
+              }              
+            }            
+          }          
+        ]
+      }
+    ]
+}

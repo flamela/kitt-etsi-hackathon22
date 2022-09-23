@@ -1,0 +1,100 @@
+.marker-parent{
+    margin-left: -20px; 
+    margin-top: -40px; 
+}
+
+.marker-pin {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-image: url('./logos/pin.png');
+    background-size: contain;    
+    cursor: pointer;
+    z-index: 1;
+  }
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    z-index: 2;
+    margin-top: 3;
+    left: 7;    
+    background: #F3F3F3;
+}
+
+.bars  {
+    position: absolute;
+    height: 12px;
+    width: 16px;
+    left: 12;
+    margin-top: 12;
+    background-image: url('./logos/bars.png');
+    background-size: contain;    
+    cursor: pointer;
+    z-index: 3;
+}
+
+.cloud  {
+    position: absolute;
+    height: 11px;
+    width: 16px;
+    left: 12;
+    margin-top: 10;    
+    background-image: url('./logos/cloud.png');
+    background-size: contain;    
+    cursor: pointer;
+    z-index: 3;
+}
+
+.videocam  {
+    position: absolute;
+    height: 10px;
+    width: 16px;
+    left: 12;
+    margin-top: 11;
+    background-image: url('./logos/videocam.png');
+    background-size: contain;    
+    cursor: pointer;
+    z-index: 3;
+}
+
+.car  {
+    position: absolute;
+    height: 13px;
+    width: 16px;
+    left: 12;
+    margin-top: 10;    
+    background-image: url('./logos/car.png');
+    background-size: contain;    
+    cursor: pointer;
+    z-index: 3;
+}
+
+.marker-text {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    font-size: 8px;
+    left: 10;
+    margin-top: 2;
+    right: 0;
+    vertical-align: middle;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900; 
+    z-index: 4;
+}
+
+.marker-centered-text {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    font-size: 8px;
+    left: 8;    
+    margin-top: 6;    
+    vertical-align: middle;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900; 
+    z-index: 4;
+}

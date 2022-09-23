@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>KITT - ETSI MEC Hackathon 2022</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">    
+    <link href={{ url_for('static', filename='main.css' ) }} rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>    
+</head>
+
+<body style="background-color: #10446b; position: fixed; top: 0; bottom: 0; left: 0; right: 0;">
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header" style="background-color: #10446b">
+        <div class="app-main__inner" style="background-color: #10446b">
+            <!-- Page Title-->            
+            <div class="row" style="height: 10em;">
+                <div class="col-md-4 col-xl-4">
+                    <!--img src="{{ url_for('static', filename='images/mmtc_dashboard.png') }}" style='height: 80%; width: 80%; object-fit: contain; margin-top: 0em; margin-left: 2em;'/-->
+                    <div class="row">
+                        <h1 style="font-family: Roboto; color: white; margin-top: 1em; margin-left: auto; margin-right: auto;">KITT - CCAR Dashboard</h1>
+                    </div> 
+                    <div class="row">
+                        <h4 style="font-family: Roboto; color: white; margin-left: auto; margin-right: auto;">ETSI MEC Hackathon 2022</h4>
+                    </div> 
+                </div> 
+                <div class="col-md-4 col-xl-4">
+                    <img src="{{ url_for('static', filename='images/optare.png') }}" style='height: 80%; width: 80%; object-fit: contain; margin-top: 2em; margin-left: 6em; margin-right: auto;'/>
+                </div>
+                <div class="col-md-3 col-xl-3">
+                    <div class="row" style="margin-left: 10em;">
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/car.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='car.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>                    
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/mmtc.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='mmtc.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/operator.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='operator.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>
+                    </div>
+                </div>          
+            </div>
+            <div class="row" style="margin-top: 5em; margin-left: auto; margin-right: auto;">
+                <div class="col-md-6 col-xl-9">
+                    <div class="row">
+                        <!-- Map -->
+                        <div class="col-md-6 col-xl-6">
+                            <div class="main-card card" style="height: 24rem;">                            
+                                <div id="map" class="embed-responsive embed-responsive-16by9">                                    
+                                    <iframe src="{{ url_for('map')}}"></iframe>
+                                </div>
+                            </div>                            
+                        </div>
+                        <!-- Coverage -->
+                        <div class="col-md-5 col-xl-2">
+                            <div class="main-card mb-1 card" style="height: 24rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Coverage</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div id="coverage_4G" class="card widget-content bg-heavy-rain"
+                                                style="height: 3rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-center">
+                                                        <div class="widget-numbers fsize-2 text-white">4G</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div id="coverage_5G" class="card widget-content bg-heavy-rain"
+                                                style="height: 3rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-center">
+                                                        <div class="widget-numbers fsize-2 text-white">5G</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div id="coverage_5G_mmtc" class="card widget-content bg-heavy-rain"
+                                                style="height: 3rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-center">
+                                                        <div class="widget-numbers fsize-1 text-white">5G MMTC</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div id="coverage_wifi" class="card widget-content bg-heavy-rain"
+                                                style="height: 3rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-center">
+                                                        <div class="widget-numbers fsize-2 text-white">Wifi</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Zonal Status -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="main-card mb-1 card" style="height: 24rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Zonal Status</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div id="zone" class="card widget-content bg-heavy-rain" style="height: 5rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading">Zone</div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <div id="zone_txt" class="widget-numbers fsize-2 text-white"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div id="cap" class="card widget-content bg-midnight-bloom"
+                                                style="height: 5rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading">Current Access Point</div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <div id="currentAP" class="widget-numbers fsize-2 text-white"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="card widget-content bg-heavy-rain" style="height: 5rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading">Previous Access Point</div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <div id="previousAP" class="widget-numbers fsize-2 text-white"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 col-xl-3">
+                            <!-- App Information -->
+                            <div class="main-card card" style="height: 24rem; margin-top: 2em;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Connected Car Information</h5>
+                                    <ul class="list-group" style="margin-top: 4em;">
+                                        <li class="list-group-item">
+                                            <div id="app_card" class="card widget-content bg-grow-early"
+                                                style="height: 3rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading">Connected to</div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <div id="connected_to" class="widget-numbers fsize-2 text-white"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div id="task1" class="card widget-content bg-sunny-morning"
+                                                style="height: 3rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-left">                                            
+                                                        <img src="{{ url_for('static', filename='images/upload.svg') }}" width="160%" height="160%">                                                        
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <div id="task1_text" class="widget-numbers fsize-2 text-white"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div id="task2" class="card widget-content bg-midnight-bloom"
+                                                style="height: 3rem;">
+                                                <div class="widget-content-wrapper text-white">
+                                                    <div class="widget-content-left">                                                        
+                                                        <img src="{{ url_for('static', filename='images/download.svg') }}" width="180%" height="180%">
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <div id="task2_text" class="widget-numbers fsize-2 text-white"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-xl-6">
+                            <!-- Video -->
+                            <!--div id="stream" class="main-card card" style="height: 24rem; margin-top: 2em;"><div class="embed-responsive embed-responsive-16by9"><iframe width="560" height="315" src="https://www.youtube.com/embed/5k1DGpr_qDw?controls=0&amp;start=1406&amp;mute=1&amp;autoplay=1&amp;showinfo=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div-->
+                            <div id="stream" class="main-card card" style="height: 24rem; margin-top: 2em;">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <video autoplay muted>
+                                        <source src="{{ url_for('static', filename='video/monaco.mp4') }}"></source>
+                                    </video>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="col-md-5 col-xl-3">
+                            <!-- Reference Signal -->
+                            <div class="main-card mb-1 card" style="height: 24rem; margin-top: 2em;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Reference Signal Received</h5>
+                                    <canvas id="canvas" style="margin-top: 2em;" width="400" height="400"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <!-- Sandbox Notifications -->
+                    <div class="main-card card" style="height: 50rem;">
+                        <div class="card-body" style="height: 0px; overflow-y: auto;">
+                            <h5 class="card-title">ETSI MEC API Notifications</h5>
+                            <!--div class="scroll-area-lg" style="height: 700px;"-->
+                                <!--div id="notifications" class="scrollbar-container ps--active-y ps"-->
+                                <div id="notifications">
+                                    <!--div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                    </div>
+                                    <div class="ps__rail-y" style="top: 0px; height: 700px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 244px;">
+                                        </div>
+                                    </div-->
+                                </div>
+                            <!--/div-->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/static/scripts/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                
+                var socket = io();
+                
+                var cardYellowClass = 'bg-sunny-morning';
+                var cardGreenClass = 'bg-grow-early';
+                var cardRedClass = 'bg-love-kiss';
+                var cardGrayClass = 'bg-heavy-rain';
+                var cardDarkBlueClass = 'bg-midnight-bloom';
+                var cardPurpleClass = 'bg-plum-plate';
+
+                let wifi = false;
+                let fourG = false;
+                let fiveG = false;
+                let fiveGMmc = false;
+                let noSignal = true;
+                let rsrData = [0, 0];                
+
+                let timestamp;
+
+                let showing = "no_signal" //no_signal - video
+                
+
+                document.getElementById('previousAP').innerHTML = "";
+
+                // canvas
+                const config = {
+                    type: 'bar',
+                    data: {
+                        labels: ['Power', 'Quality'],
+                        datasets: [{
+                            data: rsrData,
+                            backgroundColor: [
+                                'rgba(255, 8, 68, 1)',
+                                'rgba(70, 174, 247, 1)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                suggestedMax: 100
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                };
+
+                const ctx = document.getElementById('canvas').getContext("2d");
+                const myChart = new Chart(ctx, config);
+
+                function coverageColours() {
+
+                    coverage5gOldClass = document.getElementById('coverage_5G').className.split(" ");
+                    coverage5gOldClass = coverage5gOldClass[coverage5gOldClass.length - 1];
+                    coverage4gOldClass = document.getElementById('coverage_4G').className.split(" ");
+                    coverage4gOldClass = coverage4gOldClass[coverage4gOldClass.length - 1];
+                    coverageWifiOldClass = document.getElementById('coverage_wifi').className.split(" ");
+                    coverageWifiOldClass = coverageWifiOldClass[coverageWifiOldClass.length - 1];
+                    coverage5gMmtcOldClass = document.getElementById('coverage_5G_mmtc').className.split(" ");
+                    coverage5gMmtcOldClass = coverage5gMmtcOldClass[coverage5gMmtcOldClass.length - 1];
+                    connectedToMmtcOldClass = document.getElementById('app_card').className.split(" ");
+                    connectedToMmtcOldClass = connectedToMmtcOldClass[connectedToMmtcOldClass.length - 1];
+                    task1OldClass = document.getElementById('task1').className.split(" ");
+                    task1OldClass = task1OldClass[task1OldClass.length - 1];
+                    task2OldClass = document.getElementById('task2').className.split(" ");
+                    task2OldClass = task2OldClass[task2OldClass.length - 1];
+
+                    if (noSignal) {
+                        document.getElementById('coverage_5G').classList.replace(coverage5gOldClass, cardGrayClass);
+                        document.getElementById('coverage_4G').classList.replace(coverage4gOldClass, cardGrayClass);
+                        document.getElementById('coverage_wifi').classList.replace(coverageWifiOldClass, cardGrayClass);
+                        document.getElementById('coverage_5G_mmtc').classList.replace(coverage5gMmtcOldClass, cardGrayClass);
+                        document.getElementById('app_card').classList.replace(connectedToMmtcOldClass, cardGrayClass);
+                        document.getElementById('task1').classList.replace(task1OldClass, cardGrayClass);
+                        document.getElementById('task2').classList.replace(task2OldClass, cardGrayClass);
+                        //if (showing == "video"){
+                        //    hideVideoStream();
+                        //}
+                    } else { 
+                        //if (showing == "no_signal"){
+                        //    showVideoStream();
+                        //}
+                        if (fiveG) {                            
+                            document.getElementById('coverage_5G').classList.replace(coverage5gOldClass, cardGreenClass);
+                            document.getElementById('coverage_5G_mmtc').classList.replace(coverage5gMmtcOldClass, cardGrayClass);
+                            document.getElementById('coverage_4G').classList.replace(coverage4gOldClass, cardGrayClass);
+                            document.getElementById('coverage_wifi').classList.replace(coverageWifiOldClass, cardGrayClass);
+                            document.getElementById('app_card').classList.replace(connectedToMmtcOldClass, cardGreenClass);                            
+                            document.getElementById('task1').classList.replace(task1OldClass, cardDarkBlueClass);
+                            document.getElementById('task2').classList.replace(task2OldClass, cardDarkBlueClass);                            
+                        } else if (fiveGMmc){
+                            document.getElementById('coverage_5G').classList.replace(coverage5gOldClass, cardGrayClass);
+                            document.getElementById('coverage_5G_mmtc').classList.replace(coverage5gMmtcOldClass, cardGreenClass);
+                            document.getElementById('coverage_4G').classList.replace(coverage4gOldClass, cardGrayClass);
+                            document.getElementById('coverage_wifi').classList.replace(coverageWifiOldClass, cardGrayClass);
+                            document.getElementById('app_card').classList.replace(connectedToMmtcOldClass, cardGreenClass);                            
+                            document.getElementById('task1').classList.replace(task1OldClass, cardYellowClass);
+                            document.getElementById('task2').classList.replace(task2OldClass, cardYellowClass);                            
+                        } else {
+                            if (fourG){ //&& !wifi) {
+                                document.getElementById('coverage_5G').classList.replace(coverage5gOldClass, cardGrayClass);
+                                document.getElementById('coverage_5G_mmtc').classList.replace(coverage5gMmtcOldClass, cardGrayClass);
+                                document.getElementById('coverage_4G').classList.replace(coverage4gOldClass, cardYellowClass);
+                                document.getElementById('coverage_wifi').classList.replace(coverageWifiOldClass, cardGrayClass);
+                                document.getElementById('app_card').classList.replace(connectedToMmtcOldClass, cardYellowClass);
+                                document.getElementById('task1').classList.replace(task1OldClass, cardDarkBlueClass);
+                                document.getElementById('task2').classList.replace(task2OldClass, cardDarkBlueClass);                            
+                            }
+                        }
+                    }
+                }
+
+                function appendNewNotification(type) {
+
+                    //<div class="card mb-1 widget-content">                                        
+                    //    <div class="widget-content-wrapper">
+                    //        <div class="widget-content-left">
+                    //            <div class="widget-heading">Timestamp</div>                                            
+                    //        </div>
+                    //        <div class="widget-content-right">
+                    //            <div class="widget-numbers fsize-1 text-primary">
+                    //                <span>zonalPresenceNotification</span>
+                    //            </div>
+                    //        </div>
+                    //    </div>
+                    //</div>
+
+                    var card = document.createElement("div");
+                    card.className = "card mb-1 widget-content";
+
+                    var contentWrapper = document.createElement("div");
+                    contentWrapper.className = "widget-content-wrapper";
+
+                    var contentLeft = document.createElement("div");
+                    contentLeft.className = "widget-content-left";
+
+                    var heading = document.createElement("div");
+                    heading.className = "widget-heading";
+                    heading.textContent = newDateString();
+
+                    contentLeft.appendChild(heading);
+                    contentWrapper.appendChild(contentLeft);
+
+                    var contentRight = document.createElement("div");
+                    contentRight.className = "widget-content-right";
+
+                    var wNumbers = document.createElement("div");
+                    wNumbers.className = "widget-numbers fsize-1 text-primary";
+
+                    var span = document.createElement("span");
+                    span.textContent = type;
+                    if (fiveGMmc == true){
+                        span.style="color:orange;"
+                    }
+
+                    wNumbers.appendChild(span);
+                    contentRight.appendChild(wNumbers);
+
+                    contentWrapper.appendChild(contentRight);
+
+                    card.appendChild(contentWrapper);
+
+                    notifications = document.getElementById("notifications");
+                    notifications.insertBefore(card, notifications.firstChild);
+                }
+
+                function newDateString() {
+                    var date = new Date();
+
+                    var h = date.getHours();
+                    var m = date.getMinutes();
+                    var s = date.getSeconds();
+                    var ms = date.getMilliseconds();
+
+                    var dateString = h + ":" + m + ":" + s + "." + ms;
+
+                    return dateString;
+                }
+
+                function showVideoStream() {  
+                    /* <div id="stream" class="main-card card" style="height: 24rem; margin-top: 2em;">
+                        <div class="embed-responsive embed-responsive-16by9">                                    
+                            <iframe src="https://www.youtube.com/embed/5k1DGpr_qDw?controls=0&amp;start=2360&amp;mute=1&amp;autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>     
+                        </div>
+                    </div>*/
+
+                    showing = "video";
+                    var stream = document.getElementById("stream"); 
+                    var existingChild = stream.firstChild;
+                    if (existingChild != "embed-responsive"){
+                        
+                        var div = document.createElement("div");
+                        div.className = "embed-responsive embed-responsive-16by9";
+
+                        var iframe = document.createElement("iframe");                        
+                        iframe.src = "https://www.youtube.com/embed/5k1DGpr_qDw?controls=0&amp;start=2360&amp;mute=1&amp;autoplay=1&amp;showinfo=0";
+                        iframe.frameBorder="0";
+                        iframe.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        iframe.allowFullscreen;
+                                                
+                        div.appendChild(iframe);
+
+                        stream.replaceChild(div, existingChild);
+                    }
+                }
+
+                function hideVideoStream() {
+                    showing = "no_signal";
+                    var  stream = document.getElementById("stream");
+                    var existingChild = stream.firstChild;
+
+                    if (existingChild != "card-body"){                        
+
+                        var div = document.createElement("div");
+                        div.className = "card-body";
+
+                        var image = document.createElement("img");                        
+                        image.src = "{{ url_for('static', filename='images/no_signal.png') }}";
+                        image.style = "height: 70%; width: 70%; object-fit: contain; margin-left: 6em;";                    
+
+                        div.appendChild(image);
+
+                        stream.replaceChild(div, existingChild);
+                    }                    
+                }
+                
+                function sendNetworkInformation(){
+                    let text = "{}";
+                    const networkInfo = JSON.parse(text);
+                    networkInfo.zone = document.getElementById('zone_txt').innerHTML;
+                    networkInfo.current_access_point = document.getElementById('currentAP').innerHTML;
+                    networkInfo.previous_access_point = document.getElementById('previousAP').innerHTML;                      
+                    
+                    if (networkInfo.current_access_point == ""){
+                    	networkInfo.coverage = networkInfo.current_access_point;
+                    } else if (networkInfo.current_access_point == "5g-small-cell-11"){
+	                    networkInfo.coverage = "5GMMTC";                        
+                    } else {
+	                    networkInfo.coverage = networkInfo.current_access_point.split("-")[0].toUpperCase();
+                    }
+
+                    socket.emit("network_information_ccar", networkInfo);                    
+                }
+                
+                socket.on('location_message', function (data) {                
+
+                    msg = data.msg;
+
+                    document.getElementById('zone_txt').innerHTML = msg.zonalPresenceNotification.zoneId;
+                    currentApOldClass = document.getElementById('cap').className.split(" ");
+                    currentApOldClass = currentApOldClass[currentApOldClass.length - 1];
+                    zoneOldClass = document.getElementById('zone').className.split(" ");
+                    zoneOldClass = zoneOldClass[zoneOldClass.length - 1];
+
+                    // Zone card Color
+                    switch (msg.zonalPresenceNotification.zoneId){
+                        case "zone01":
+                            document.getElementById('zone').classList.replace(zoneOldClass, cardPurpleClass);
+                            myChart.update();
+                            break;
+                        case "zone02":
+                            document.getElementById('zone').classList.replace(zoneOldClass, cardRedClass);
+                            myChart.update();
+                            break;
+                        case "zone03":
+                            if (msg.zonalPresenceNotification.currentAccessPointId == "5g-small-cell-11"){
+                                document.getElementById('zone').classList.replace(zoneOldClass, cardYellowClass);
+                                myChart.update();
+                            }else{
+                                document.getElementById('zone_txt').innerHTML = "";
+                                document.getElementById('zone').classList.replace(zoneOldClass, cardGrayClass);
+                                noSignal = true;
+                                myChart.update();
+                                coverageColours();
+                            }                                
+                            break;
+                        case "zone04":
+                            document.getElementById('zone').classList.replace(zoneOldClass, cardGreenClass);
+                            myChart.update();
+                            break;
+                    }
+
+                    //Current-Actual Access Point text
+                    if (msg.zonalPresenceNotification.zoneId=="zone03"){
+                        if ((msg.zonalPresenceNotification.currentAccessPointId=="4g-macro-cell-7")&&
+                        (msg.zonalPresenceNotification.previousAccessPointId=="4g-macro-cell-8")){
+                            //from green to orange
+                            document.getElementById('currentAP').innerHTML = "";
+                            document.getElementById('task1_text').innerHTML = "";
+                            document.getElementById('task2_text').innerHTML = "";
+                            if ("previousAccessPointId" in msg.zonalPresenceNotification){
+                                document.getElementById('previousAP').innerHTML = msg.zonalPresenceNotification.previousAccessPointId;
+                            }
+
+                        } else if ((msg.zonalPresenceNotification.currentAccessPointId=="4g-macro-cell-6")&&
+                        (msg.zonalPresenceNotification.previousAccessPointId=="4g-macro-cell-3")){
+                            //from purple to orange
+                            document.getElementById('currentAP').innerHTML = "";
+                            document.getElementById('task1_text').innerHTML = "";
+                            document.getElementById('task2_text').innerHTML = "";
+                            rsrData[0] = 0;
+                            rsrData[1] = 0;
+                            config.data.datasets[0].data.push(rsrData);
+                            myChart.update();    
+                            if ("previousAccessPointId" in msg.zonalPresenceNotification){
+                                document.getElementById('previousAP').innerHTML = msg.zonalPresenceNotification.previousAccessPointId;
+                            }
+                        } else if (msg.zonalPresenceNotification.currentAccessPointId=="5g-small-cell-11"){
+                            //if 5Gmmtc
+                            if (msg.zonalPresenceNotification.currentAccessPointId != document.getElementById('currentAP').innerHTML){                            
+                                document.getElementById('currentAP').innerHTML = msg.zonalPresenceNotification.currentAccessPointId;                                    
+                            }                            
+                            document.getElementById('task1_text').innerHTML = "Updating SW";
+                            document.getElementById('task2_text').innerHTML = "Retrieving data";                            
+                        } else {
+                            if (document.getElementById('currentAP').innerHTML !=""){
+                                document.getElementById('previousAP').innerHTML = document.getElementById('currentAP').innerHTML;
+                            }                            
+                            document.getElementById('currentAP').innerHTML = "";
+                            document.getElementById('task1_text').innerHTML = "";
+                            document.getElementById('task2_text').innerHTML = "";
+                            rsrData[0] = 0;
+                            rsrData[1] = 0;
+                            config.data.datasets[0].data.push(rsrData);
+                            myChart.update();
+                        }
+                    } else {
+                        document.getElementById('currentAP').innerHTML = msg.zonalPresenceNotification.currentAccessPointId;                        
+                        document.getElementById('task1_text').innerHTML = "Uploading data";
+                        document.getElementById('task2_text').innerHTML = "Retrieving SW";
+                        if ("previousAccessPointId" in msg.zonalPresenceNotification) {                            
+                            document.getElementById('previousAP').innerHTML = msg.zonalPresenceNotification.previousAccessPointId;
+                        }                        
+                    }
+
+                    if (noSignal != true){
+                        appendNewNotification("zonalPresenceNotification");
+                    }                    
+
+                    sendNetworkInformation()                    
+
+                })
+
+                // Coverage and signal
+                socket.on('rni_message', function (data) {
+
+                    msg = data.msg;
+                    radio_type = data.radio_type;
+
+                    if ((document.getElementById('zone_txt').innerHTML == "")||(document.getElementById('zone_txt').innerHTML == "zone03")){
+                        if (document.getElementById('currentAP').innerHTML!="5g-small-cell-11"){
+                            fourG = false;
+                            fiveG = false;
+                            noSignal = true;                            
+                            document.getElementById('connected_to').innerHTML = "";
+                            fiveGMmc = false;
+                            rsrData[0] = 0;
+                            rsrData[1] = 0;
+                        } else {
+                            fourG = false;
+                            fiveG = false;
+                            noSignal = false
+                            fiveGMmc = true;
+                            document.getElementById('connected_to').innerHTML = "MMTC";
+                            rsrData[0] = msg.servCellMeasInfo[0].sCell.measQuantityResultsSsbCell.rsrp;
+                            rsrData[1] = msg.servCellMeasInfo[0].sCell.measQuantityResultsSsbCell.rsrq;    
+                        }
+                        
+                        if (noSignal != true){
+                            if (radio_type == "4g"){
+                                appendNewNotification("MeasRepUeNotification");
+                            } else {
+                                appendNewNotification("NrMeasRepUeNotification");
+                            }
+                        }                        
+                    } else {
+                        if (radio_type == "4g") {
+                            fourG = true;
+                            document.getElementById('connected_to').innerHTML = "Network";
+                            fiveG = false;
+                            fiveGMmc = false;
+                            noSignal = false;
+                            wifi = false;
+
+                            rsrData[0] = msg.rsrp;
+                            rsrData[1] = msg.rsrq;
+
+                            appendNewNotification("MeasRepUeNotification");
+
+                        } else {
+                            fiveG = true;
+                            document.getElementById('connected_to').innerHTML = "Network";
+                            fiveGMmc = false;
+                            fourG = false;
+                            noSignal = false;
+                            wifi = false;
+
+                            rsrData[0] = msg.servCellMeasInfo[0].sCell.measQuantityResultsSsbCell.rsrp;
+                            rsrData[1] = msg.servCellMeasInfo[0].sCell.measQuantityResultsSsbCell.rsrq;
+
+                            
+                        }
+                    }
+                    
+                    config.data.datasets[0].data.push(rsrData);
+                    myChart.update();
+                    coverageColours();
+                })
+
+                socket.on('wai_message', function (data) {
+                    msg = data.msg;
+                    wifi_type = data.wifi_type;
+
+                    if (wifi_type == "nowifi") {
+                        wifi = false;
+                    } else {
+                        wifi = true;
+                        fourG = false;
+                        fiveG = false;
+                        fiveGMmc = false;
+                        noSignal = false;
+
+                        rsrData[0] = 0;
+                        rsrData[1] = 0;
+                        config.data.datasets[0].data.push(rsrData);
+                        myChart.update();
+                    }
+
+                    if (noSignal != true){
+                        appendNewNotification("AssocStaNotification");
+                    } 
+                    coverageColours();
+                })
+                
+                socket.on('car_location_coverage', function (coordinates) {
+
+                    zoneOldClass = document.getElementById('zone').className.split(" ");
+                    zoneOldClass = zoneOldClass[zoneOldClass.length - 1];
+                    
+                    if ((coordinates[0]>7.43)&&(coordinates[1]>43.7391)&&(document.getElementById('currentAP').innerHTML!="4g-macro-cell-8")){
+                        //from orange to green                        
+                        document.getElementById('currentAP').innerHTML = "4g-macro-cell-8";
+                        document.getElementById('zone_txt').innerHTML = "zone04";
+                        document.getElementById('task1_text').innerHTML = "Uploading data";
+                        document.getElementById('task2_text').innerHTML = "Retrieving SW";                                                                        
+                        fourG = true;
+                        noSignal = false;
+                        fiveG = false;
+                        fiveGMmc = false;
+                        wifi = false;
+                        myChart.update();
+                        coverageColours();
+                        document.getElementById('zone').classList.replace(zoneOldClass, cardGreenClass);
+                        sendNetworkInformation();
+                        socket.emit("v2x_qos", "green");                        
+
+                    } else if ((coordinates[0]<7.4199)&&(coordinates[1]<43.7364)&&(document.getElementById('currentAP').innerHTML != "4g-macro-cell-3")&&
+                    (document.getElementById('currentAP').innerHTML != "5g-small-cell-3")){
+                        //from orange to purple
+                        document.getElementById('currentAP').innerHTML = "4g-macro-cell-3";
+                        document.getElementById('zone_txt').innerHTML = "zone01";
+                        document.getElementById('task1_text').innerHTML = "Uploading data";
+                        document.getElementById('task2_text').innerHTML = "Retrieving SW";                                                
+                        fourG = true;
+                        noSignal = false;
+                        fiveG = false;
+                        fiveGMmc = false;
+                        wifi = false;
+                        myChart.update();
+                        coverageColours();
+                        document.getElementById('zone').classList.replace(zoneOldClass, cardPurpleClass);
+                        sendNetworkInformation();
+                        socket.emit("v2x_qos", "purple");
+                    }                    
+                });
+            });
+        </script>        
+</body>
+
+</html>

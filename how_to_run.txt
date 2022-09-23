@@ -1,0 +1,5 @@
+docker run --name notifications_consumer -d -it -p 80:6100 \
+-e CCAR_IP=<CCAR_IP> \
+-e CCAR_PORT=<CCAR_PORT> \
+-e SANDBOX_COOKIE=<cookie> \
+notifications-consumer

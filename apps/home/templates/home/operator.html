@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>KITT - ETSI MEC Hackathon 2022</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">    
+    <link href={{ url_for('static', filename='main.css' ) }} rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>    
+</head>
+
+<body style="background-color: #10446b; position: fixed; top: 0; bottom: 0; left: 0; right: 0;">
+    <iframe src="{{ url_for('car')}}" style="position: absolute; width: 0; height: 0; border: 0;"></iframe>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header" style="background-color: #10446b">
+        <div class="app-main__inner" style="background-color: #10446b">
+            <!-- Page Title-->            
+            <div class="row" style="height: 10em;">
+                <div class="col-md-4 col-xl-4">
+                    <!--img src="{{ url_for('static', filename='images/mmtc_dashboard.png') }}" style='height: 80%; width: 80%; object-fit: contain; margin-top: 0em; margin-left: 2em;'/-->
+                    <div class="row">
+                        <h1 style="font-family: Roboto; color: white; margin-top: 1em; margin-left: auto; margin-right: auto;">KITT - Operator Dashboard</h1>
+                    </div> 
+                    <div class="row">
+                        <h4 style="font-family: Roboto; color: white; margin-left: auto; margin-right: auto;">ETSI MEC Hackathon 2022</h4>
+                    </div> 
+                </div> 
+                <div class="col-md-4 col-xl-4">
+                    <img src="{{ url_for('static', filename='images/optare.png') }}" style='height: 80%; width: 80%; object-fit: contain; margin-top: 2em; margin-left: 6em; margin-right: auto;'/>
+                </div>
+                <div class="col-md-3 col-xl-3">
+                    <div class="row" style="margin-left: 10em;">
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/car.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='car.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>                    
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/mmtc.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='mmtc.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>
+                        <div class="col-md-4 col-xl-4"><img src="{{ url_for('static', filename='images/operator.png') }}" style='height: 100%; width: 100%; object-fit: contain; margin-top: 1em; margin-left: 2em; margin-right: auto; cursor: pointer;' onclick="location.href='operator.html'" onMouseOver="this.style.backgroundColor='#dce1e78f'" onMouseOut="this.style.backgroundColor='#10446b'"/></div>
+                    </div>
+                </div>          
+            </div>
+            <div class="row" style="margin-top: 10em; margin-left: auto; margin-right: auto;">
+                <div class="col-md-5 col-xl-5" style="margin-left: auto; margin-right: auto;">
+                    <!-- Logs -->                
+                    <div class="main-card card" style="height: 40rem;">                                                    
+                        <img src="{{ url_for('static', filename='images/log.png')}}" style="display: block; border: none; height: calc(100vh - 30px); width: 100%;"></img>
+                    </div>                                    
+                </div>
+                <div class="col-md-4 col-xl-4" style="margin-left: auto; margin-right: auto;">                    
+                    <div class="row">
+                        <!-- Inference -->
+                        <div class="col-md-6 col-xl-11" style="margin-left: auto; margin-right: auto;">
+                            <div id="inferenced_stream" class="main-card card" style="height: 19rem;"><div class="embed-responsive embed-responsive-16by9"><video id="videoAI" autoplay muted><source src="{{ url_for('static', filename='video/monacoAI.mp4') }}"></source></video></div></div>                            
+                        </div>                        
+                    </div>
+                    <!-- Map -->
+                    <div class="row">                        
+                        <div class="col-md-6 col-xl-11" style="margin-left: auto; margin-right: auto;">
+                            <div class="main-card card" style="height: 19rem; margin-top: 2em;">                            
+                                <div class="embed-responsive embed-responsive-16by9">                                                                                                            
+                                    <iframe src="{{ url_for('map')}}"></iframe>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xl-3" style="margin-left: auto; margin-right: auto;">
+                    <!-- Notifications -->
+                    <div class="main-card card" style="height: 40rem;">
+                        <!--div class="card-body"-->
+                        <div class="card-body" style="height: 0px; overflow-y: auto;">
+                            <h5 class="card-title">V2X Information</h5>
+                            <!--div class="scroll-area-lg" style="height: 700px; overflow-y: auto;"-->
+                                <!--div id="v2x_notifications" class="scrollbar-container ps--active-y ps"-->
+                                <div id="v2x_notifications">
+                                    <!--div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                    </div>
+                                    <div class="ps__rail-y" style="top: 0px; height: 700px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 244px;">
+                                        </div>
+                                    </div-->
+                                </div>
+                            <!--/div-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--script type="text/javascript" src={{ url_for('static', filename='scripts/main.js' ) }}></script-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/static/scripts/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {                               
+
+                var socketOperator = io();
+
+                let currentlyShowing = "";
+                let videoCurrentTime="";
+                
+                function appendNewNotificationOperator(txt) {
+
+                    //<div class="card mb-3 widget-content">                                        
+                    //    <div class="widget-content-wrapper">
+                    //        <div class="widget-content-left">
+                    //            <div class="widget-heading">Timestamp</div>                                            
+                    //        </div>
+                    //        <div class="widget-content-right">
+                    //            <div class="widget-numbers fsize-1 text-primary">
+                    //                <span>zonalPresenceNotification</span>                    
+                    //            </div>
+                    //            <div class="widget-subheading">
+                    //                <pre>json</pre>
+                    //            </div>
+                    //        </div>
+                    //    </div>                    
+                    //</div>
+
+                    var card = document.createElement("div");
+                    card.className = "card mb-3 widget-content";
+
+                    var contentWrapper = document.createElement("div");
+                    contentWrapper.className = "widget-content-wrapper";
+
+                    var contentLeft = document.createElement("div");
+                    contentLeft.className = "widget-content-left";
+
+                    var heading = document.createElement("div");
+                    heading.className = "widget-heading";
+                    heading.textContent = newDateStringOperator();
+
+                    contentLeft.appendChild(heading);
+                    contentWrapper.appendChild(contentLeft);
+
+                    var contentRight = document.createElement("div");
+                    contentRight.className = "widget-content-right";
+
+                    var wNumbers = document.createElement("div");
+                    wNumbers.className = "widget-numbers fsize-1 text-primary";
+
+                    var span = document.createElement("span");
+                    span.textContent = "Predicted QoS";                    
+
+                    wNumbers.appendChild(span);
+                    contentRight.appendChild(wNumbers);
+
+                    subHeading = document.createElement("div");
+                    subHeading.className = "widget-subheading";
+                    pre = document.createElement("pre");
+                    pre.textContent = txt;
+                    subHeading.appendChild(pre);
+                    contentRight.appendChild(subHeading);
+
+                    contentWrapper.appendChild(contentRight);
+
+                    card.appendChild(contentWrapper);
+                                        
+                    notifications = document.getElementById("v2x_notifications");
+                    notifications.insertBefore(card, notifications.firstChild);
+                }
+
+                function newDateStringOperator() {
+                    var date = new Date();
+
+                    var h = date.getHours();
+                    var m = date.getMinutes();
+                    var s = date.getSeconds();
+                    var ms = date.getMilliseconds();
+
+                    var dateString = h + ":" + m + ":" + s + "." + ms;
+
+                    return dateString;
+                }
+
+                function showVideoStreamOperator() {  
+                    /* <div id="stream" class="embed-responsive embed-responsive-16by9">                                    
+                            <video autoplay muted>
+                                <source src="{{ url_for('static', filename='video/monaco.mp4') }}"></source>
+                            </video>
+                        </div>*/
+
+                    currentlyShowing = "video";
+                    var stream = document.getElementById("inferenced_stream"); 
+                    var existingChild = stream.firstChild;
+                    if (existingChild != "embed-responsive"){
+                        
+                        var div = document.createElement("div");
+                        div.className = "embed-responsive embed-responsive-16by9";
+
+                        var video = document.createElement("video");                        
+                        video.src = "{{ url_for('static', filename='video/monacoAI.mp4') }}";
+                        video.id = "videoAI";
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.currentTime=videoCurrentTime;                        
+                                                
+                        div.appendChild(video);
+
+                        stream.replaceChild(div, existingChild);
+                    }
+                }
+
+                function hideVideoStreamOperator() {
+                    currentlyShowing = "no_signal";
+                    var  stream = document.getElementById("inferenced_stream");
+                    var existingChild = stream.firstChild;
+
+                    if (existingChild != "card-body"){     
+                        
+                        var vid = document.getElementById("videoAI");
+                        videoCurrentTime = vid.currentTime;                        
+
+                        var div = document.createElement("div");
+                        div.className = "card-body";
+
+                        var image = document.createElement("img");                        
+                        image.src = "{{ url_for('static', filename='images/no_signal.png') }}";
+                        image.style = "height: 70%; width: 70%; object-fit: contain; margin-left: 6em;";                    
+
+                        div.appendChild(image);
+
+                        stream.replaceChild(div, existingChild);
+                    }                    
+                }
+                
+                socketOperator.on('network_information_operator', function (netInfo) {
+
+                    console.log(netInfo);
+
+                    if ((netInfo.coverage == "") && (currentlyShowing != "no_signal")){
+                        hideVideoStreamOperator();
+                    } else if((netInfo.coverage != "") && (netInfo.coverage != "5GMMTC") && (currentlyShowing != "video")) {
+                        showVideoStreamOperator();
+                    }                    
+                });
+
+                socketOperator.on('v2x', function (pqos) {
+                    appendNewNotificationOperator(JSON.stringify(pqos, null, 2));
+                });
+            });
+        </script>        
+</body>
+
+</html>

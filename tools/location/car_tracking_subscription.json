@@ -1,0 +1,13 @@
+{
+  "userTrackingSubscription": {
+    "callbackReference": {
+      "notifyURL": "http://193.146.210.226/callbacks/location/cartracking"
+    },
+    "address": "10.100.0.1",
+    "userEventCriteria": [
+      "Entering",
+      "Leaving",
+      "Transferring"
+    ]
+  }
+}
